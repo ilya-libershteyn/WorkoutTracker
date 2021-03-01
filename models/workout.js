@@ -15,7 +15,10 @@ const workoutSchema = new Schema({
         },
         duration: {
             type: Number,
-            required: "Enter an exercise duration in minutes"
+            required: "Enter the duration of the exercise in minutes"
+        },
+        weight: {
+            type: Number
         },
         sets: {
             type: Number,
@@ -31,7 +34,18 @@ const workoutSchema = new Schema({
         type: Date,
         default: () => new Date()
     }
+},
+{
+    toJSON: {
+        virtuals: true
+    }
 });
+// dynamically sums the duration value of every element in exercises
+workoutSchema.virtual("totalDuration").get(function () {
+    return this.exercises.reduce((total, exercise) => {
+        return total + exercise.duration;
+    }, 0);
+})
 
 const Workout = mongoose.model("Workout", workoutSchema);
 
