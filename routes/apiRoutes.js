@@ -33,7 +33,14 @@ router.post("/api/workouts", (req, res) => {
 });
 
 router.get("/api/workouts/range", (req, res) => {
-
+    Workout.find({}).limit(7)
+    .then(workouts => {
+      console.log(workouts)
+      res.json(workouts);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
 });
 
 module.exports = router;
